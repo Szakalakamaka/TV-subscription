@@ -61,6 +61,12 @@ resource "azurerm_route_table" "private" {
   }
 }
 
+resource "azurerm_subnet_route_table_association" "private" {
+  for_each = { for subnet in var.private_subnets : subnet.name => subnet }
+  subnet_id = azurerm_subnet.private_subnets[each.key].id
+  route_table_id = azurerm_route_table.private.id
+}
+
 ### Peering ###
 
 resource "azurerm_virtual_network_peering" "peerings" {
