@@ -81,3 +81,31 @@ resource "azurerm_virtual_network_peering" "peerings" {
   allow_gateway_transit        = each.value.allow_gateway_transit
   use_remote_gateways          = each.value.use_remote_gateways
 }
+
+
+
+# module "networking" {
+#   source = "./modules/TV-networking"
+
+# location            = "East US"
+# resource_group_name = "rzog"
+# vnet_name           = "rzog"
+
+# private_subnets = [
+#   { name = "private-subnet-1", address = "10.0.3.0/24" },
+#   { name = "private-subnet-2", address = "10.0.4.0/24" }
+# ]
+
+# peerings = [
+#   # peering with onprem network for communication with internal services
+#   {
+#     name                     = "vnet-peering"
+#     remote_virtual_network_id = "/subscriptions/01766daf-0ba7-412e-b986-aedb1e04bc60/resourceGroups/rzog1/providers/Microsoft.Network/virtualNetworks/rzog"
+#     allow_virtual_network_access = true
+#     allow_forwarded_traffic      = true
+#     allow_gateway_transit        = false
+#     use_remote_gateways          = false
+#   }
+# ]
+
+# }
