@@ -1,12 +1,11 @@
-variable "location" {
-  description = "The location where the resources will be created"
-  type        = string
+variable "resource_group" {
+  description = "Resource group variables"
+  type        = object({
+    name     = string
+    location = string
+  })
 }
 
-variable "resource_group_name" {
-  description = "The name of the resource group"
-  type        = string
-}
 
 variable "vnet_name" {
   description = "The name of the existing Virtual Network"
@@ -26,9 +25,21 @@ variable "peerings" {
   type = list(object({
     name                         = string
     remote_virtual_network_id    = string
-    allow_virtual_network_access = bool
-    allow_forwarded_traffic      = bool
-    allow_gateway_transit        = bool
-    use_remote_gateways          = bool
+    allow_virtual_network_access = optional(bool)
+    allow_forwarded_traffic      = optional(bool)
+    allow_gateway_transit        = optional(bool)
+    use_remote_gateways          = optional(bool)
   }))
+  default = []
+}
+
+locals {
+  default_peerings = {
+    allow_virtual_network_access = true
+    allow_forwarded_traffic      = true
+    allow_gateway_transit        = false
+    use_remote_gateways          = false
+}
+  peerings = [for peering in var.peerings : merge(local.default_peerings, peering)]
+
 }
